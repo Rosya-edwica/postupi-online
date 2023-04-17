@@ -1,0 +1,14 @@
+domain: "https://postupi.online/ssuzy/"
+formEducations: "specialnosti/spo/|specialnosti/npo/"
+
+db:
+  postgresUrl: "postgres://postgres:admin@127.0.0.1:5432/edwica?sslmode=disable"
+  table:
+    vuz:  "college"
+    specialization: "college_specialization"
+    program: "college_program"
+    profession: "college_profession"
+    contacts: "college_contacts"
+    vuz_to_specialization: "college_to_specialization"
+    specialization_to_program: "college_specialization_to_program"
+    program_to_profession: "college_specialization_program_to_profession"

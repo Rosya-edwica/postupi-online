@@ -1,0 +1,14 @@
+domain: "https://postupi.online/vuzi/"
+formEducations: "specialnosti/bakalavr/|specialnosti/specialist/|specialnosti/"
+
+db:
+  postgresUrl: "postgres://postgres:admin@127.0.0.1:5432/edwica?sslmode=disable"
+  table:
+    vuz:  "vuz"
+    specialization: "vuz_specialization"
+    program: "vuz_program"
+    profession: "vuz_profession"
+    contacts: "vuz_contacts"
+    vuz_to_specialization: "vuz_to_specialization"
+    specialization_to_program: "vuz_specialization_to_program"
+    program_to_profession: "vuz_specialization_program_to_profession"

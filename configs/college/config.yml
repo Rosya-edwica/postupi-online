@@ -2,7 +2,7 @@ domain: "https://postupi.online/ssuzy/"
 formEducations: "specialnosti/spo/|specialnosti/npo/"
 
 db:
-  postgresUrl: "postgres://postgres:admin@127.0.0.1:5432/edwica?sslmode=disable"
+  postgresUrl: "postgres://postgres:admin@127.0.0.1:5432/postupi_online?sslmode=disable"
   table:
     vuz:  "college"
     specialization: "college_specialization"

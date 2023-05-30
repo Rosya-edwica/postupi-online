@@ -1,3 +1,5 @@
+# заполните нужными значениями postgresUrl и уберите .example из расширения
+
 domain: "https://postupi.online/ssuzy/"
 formEducations: "specialnosti/spo/|specialnosti/npo/"
 

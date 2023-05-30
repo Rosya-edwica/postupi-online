@@ -1,3 +1,6 @@
+
+# Заполните postgresUrl и уберите .example из расширения файла
+
 domain: "https://postupi.online/vuzi/"
 formEducations: "specialnosti/bakalavr/|specialnosti/specialist/|specialnosti/"
 

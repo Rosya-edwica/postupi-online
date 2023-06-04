@@ -9,16 +9,15 @@ import (
 	"github.com/Rosya-edwica/postupi-online/pkg/scraper/html"
 )
 
-func (s *Scraper) ScrapeProfessions(connectionId int, programUrl string) {
-	programId := getId(programUrl)
+func (s *Scraper) ScrapeProfessions(programId int, programUrl string) {
 	pages := GetPagesCount(programUrl + "professii")
 	for page := 1; page <= pages; page++ {
 		url := fmt.Sprintf("%sprofessii/?page_num=%d", programUrl, page)
-		s.ScrapePageProfessions(connectionId, url, programId)
+		s.ScrapePageProfessions(programId, url)
 	}
 }
 
-func (s *Scraper) ScrapePageProfessions(connectionId int, pageUrl string, programId string) {
+func (s *Scraper) ScrapePageProfessions(programId int, pageUrl string) {
 	body, err := html.GetBody(pageUrl)
 	checkErr(err)
 
@@ -27,7 +26,7 @@ func (s *Scraper) ScrapePageProfessions(connectionId int, pageUrl string, progra
 		profession.Name = h.ChildText("h2")
 		profession.Image = h.ChildAttr("img.img-load", "data-dt")
 		profession.ProgramId = programId
-		db.SaveProfession(profession, connectionId)
+		s.Db.SaveProfession(profession)
 	})
 	return
 }

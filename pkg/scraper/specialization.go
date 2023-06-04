@@ -37,6 +37,6 @@ func (s *Scraper) ScrapeOneSpecialization(HTMLBlock *colly.HTMLElement) {
 	specialization.Base.Direction = html.GetSpecializationDirection(HTMLBlock, specialization.SpecId)
 	specialization.Description = html.GetSpecializationDescription(bodyHTML)
 
-	db.SaveSpecialization(specialization)
+	s.Db.SaveSpecialization(specialization)
 	s.ScrapeAllPrograms(basic.Url)
 }

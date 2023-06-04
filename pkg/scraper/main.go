@@ -15,13 +15,14 @@ import (
 )
 
 type Scraper struct {
+	Db				*database.DB
 	Domain         string
 	FormEducations []string
 }
 
 var db *database.DB
 
-func Run(scr Scraper, db *database.DB) {
+func Run(scr Scraper) {
 
 	pagesCount := GetPagesCount(scr.Domain)
 	for i := 1; i <= pagesCount; i++ {
@@ -33,11 +34,13 @@ func Run(scr Scraper, db *database.DB) {
 				fmt.Println(err)
 				continue
 			}
-			err = db.SaveVuz(vuz)
+			err = scr.Db.SaveVuz(vuz)
 			checkErr(err)
+			scr.ScrapeContacts(vuz.Base.Url)
 			scr.ScrapeAllSpecializations(vuz.Base.Url)
 		}
 	}
+	scr.Db.Close()
 }
 
 func GetVuzesBlockInPage(page string) (blocks []*colly.HTMLElement) {

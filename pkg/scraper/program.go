@@ -46,9 +46,9 @@ func (s *Scraper) ScrapeProgram(h *colly.HTMLElement, specId string, wg *sync.Wa
 	program.HasProfessions = checkProfessionsExist(basic.Url)
 	setNameToProgram(&program)
 
-	connectionId, err := db.SaveProgram(program)
+	programId, err := s.Db.SaveProgram(program)
 	checkErr(err)
-	s.ScrapeProfessions(connectionId, program.Base.Url)
+	s.ScrapeProfessions(programId, program.Base.Url)
 }
 
 func setNameToProgram(program *models.Program) {

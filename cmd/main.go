@@ -22,10 +22,9 @@ func main() {
 	if err := initConfig(parserType); err != nil {
 		panic(fmt.Sprintf("Не загрузился конфиг: %s", err))
 	}
-	db := initDatabase()
 	scr := initScraper()
 
-	scraper.Run(scr, db)
+	scraper.Run(scr)
 	fmt.Printf("Время выполнения программы: %d секунд.\n", time.Now().Unix()-start)
 }
 
@@ -41,13 +40,17 @@ func initDatabase() *database.DB {
 		TableSpecializationToProgram: viper.GetString("db.table.specialization_to_program"),
 		TableProgramToProfession:     viper.GetString("db.table.program_to_profession"),
 	}
+	db.Db = db.Connect()
 	logger.Log.Println("Содержание объекта Базы данных:", db)
 	return db
 }
 
 func initScraper() scraper.Scraper {
+	db := initDatabase()
+	
 	scr := scraper.Scraper{
 		Domain:         viper.GetString("domain"),
+		Db: db,
 		FormEducations: strings.Split(viper.GetString("formEducations"), "|"),
 	}
 	logger.Log.Println("Содержание объекта парсера:", scr)

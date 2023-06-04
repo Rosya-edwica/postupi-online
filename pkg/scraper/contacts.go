@@ -2,15 +2,16 @@ package scraper
 
 import (
 	"fmt"
-	"log"
 	"time"
 
+	"github.com/Rosya-edwica/postupi-online/pkg/common/logger"
 	"github.com/Rosya-edwica/postupi-online/pkg/common/models"
 	"github.com/Rosya-edwica/postupi-online/pkg/scraper/html"
 	"github.com/gocolly/colly"
 )
 
-func scrapeContacts(url string) (err error) {
+func (scr *Scraper) ScrapeContacts(url string) (err error) {
+	fmt.Println(url)
 	contact := models.Contacts{}
 	c := colly.NewCollector()
 	badGateway := html.CheckBadGateway(c)
@@ -19,30 +20,28 @@ func scrapeContacts(url string) (err error) {
 	}
 	c.SetRequestTimeout(30 * time.Second)
 
-	// Ищем 4 span блока с контактами вуза
-	c.OnHTML("section.section-box", func(h *colly.HTMLElement) {
-		contactList := [4]string{}
-		h.ForEach("span", func(i int, e *colly.HTMLElement) {
-			contactList[i] = e.Text
-		})
-
-		if contactList[0] != "" {
-			contact.WebSite = contactList[0]
-			contact.Email = contactList[1]
-			contact.Phone = contactList[2]
-			contact.Address = contactList[3]
-			contact.VuzId = getVuzId(url)
-		}
+	c.OnHTML("span.contact-icon.contact-icon_sm.mail", func(h *colly.HTMLElement) {
+		contact.Email = h.Text
 	})
-	err = c.Post(url, html.Headers)
+	c.OnHTML("span.contact-icon.contact-icon_sm.phone", func(h *colly.HTMLElement) {
+		contact.Phone = h.Text
+	})
+	c.OnHTML("span.contact-icon.contact-icon_sm.address", func(h *colly.HTMLElement) {
+		contact.Address = h.Text
+	})
+	c.OnHTML("span.contact-icon.contact-icon_sm.site", func(h *colly.HTMLElement) {
+		contact.WebSite = h.Text
+	})
+	contact.VuzId = getVuzId(url)
+	err = c.Post(url+"contacts/", html.Headers)
 	if err != nil {
 		fmt.Println("Catched the error. Program stopped to sleep of 10 seconds.")
 		time.Sleep(10 * time.Second)
-		err = scrapeContacts(url + "contacts/")
+		err = scr.ScrapeContacts(url)
 		checkErr(err)
 	}
-	db.SaveContacts(contact)
+	scr.Db.SaveContacts(contact)
 	checkErr(err)
-	log.Printf("Contact:%s", contact.VuzId)
+	logger.Log.Printf("Contact:%s\n", contact.VuzId)
 	return
 }

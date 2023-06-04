@@ -36,9 +36,6 @@ func initDatabase() *database.DB {
 		TableProgram:                 viper.GetString("db.table.program"),
 		TableProfession:              viper.GetString("db.table.profession"),
 		TableContacts:                viper.GetString("db.table.contacts"),
-		TableVuzToSpecialization:     viper.GetString("db.table.vuz_to_specialization"),
-		TableSpecializationToProgram: viper.GetString("db.table.specialization_to_program"),
-		TableProgramToProfession:     viper.GetString("db.table.program_to_profession"),
 	}
 	db.Db = db.Connect()
 	logger.Log.Println("Содержание объекта Базы данных:", db)

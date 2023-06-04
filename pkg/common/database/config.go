@@ -15,9 +15,6 @@ type DB struct {
 	TableProgram                 string
 	TableProfession              string
 	TableContacts                string
-	TableVuzToSpecialization     string
-	TableProgramToProfession     string
-	TableSpecializationToProgram string
 }
 
 func (d *DB) Connect() (connection *sql.DB) {

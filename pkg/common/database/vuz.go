@@ -22,7 +22,7 @@ func (db *DB) SaveVuz(vuz models.Vuz) (err error) {
 	if err != nil {
 
 		logger.Log.Printf("[Ошибка] Заведение - %s не было добавлено в базу по причине: %s", vuz.VuzId, err.Error())
-		return nil
+		return err
 	}
 	err = tx.Commit()
 	checkErr(err)

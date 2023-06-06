@@ -35,7 +35,9 @@ func Run(scr Scraper) {
 				continue
 			}
 			err = scr.Db.SaveVuz(vuz)
-			checkErr(err)
+			if err != nil {
+				continue
+			}
 			scr.ScrapeContacts(vuz.Base.Url)
 			scr.ScrapeAllSpecializations(vuz.Base.Url)
 		}
